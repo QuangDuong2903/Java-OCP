@@ -295,3 +295,63 @@ Alternatively, you can specify a directory instead of using the current director
 ```commandline
 jar -cvf myNewFile.jar -C dir .
 ```
+Important jar options
+
+| Option                                       | Description                                             |
+|----------------------------------------------|---------------------------------------------------------|
+| -c <br> -create                              | Creates a new JAR file                                  |
+| -v <br> --verbose                            | Prints details when working with JAR files              |
+| -f <**fileName**> <br> --file <**fileName**> | JAR filename                                            |
+| -C <**directory**>                           | Directory containing files to be used to create the JAR |
+## Ordering Elements in a Class
+Now that you’ve seen the most common parts of a class, let’s take a look at the correct order
+to type them into a file. Comments can go anywhere in the code. Beyond that, you need to
+memorize the rules in Table bellow
+
+| Element                    | Example             | Required? | Where does it go?                                          |
+|----------------------------|---------------------|-----------|------------------------------------------------------------|
+| Package declaration        | package abc;        | No        | First line in the file (excluding comments or blank lines) |
+| import statements          | import java.util.*; | No        | Immediately after the package (if present)                 |
+| Top-level type declaration | public class C      | Yes       | Immediately after the import (if any)                      |
+| Field declarations         | int value;          | No        | Any top-level element within a class                       |
+| Method declarations        | void method()       | No        | Any top-level element within a class                       |
+
+Let’s look at a few examples to help you remember this. The first example contains one of
+each element:
+```java
+package structure; // package must be first non-comment
+
+import java.util.*; // import must come after package
+
+public class Meerkat { // then comes the class
+    double weight; // fields and methods can go in either order
+    
+    public double getWeight() {
+        return weight; 
+    }
+    
+    double height; // another field -they don't need to be together
+}
+```
+So far, so good. This is a common pattern that you should be familiar with. How
+about this one?
+```java
+/* header */
+package structure;
+// class Meerkat
+public class Meerkat { }
+```
+Still good. We can put comments anywhere, blank lines are ignored, and imports are
+optional. In the next example, we have a problem:
+```java
+import java.util.*;
+package structure; // DOES NOT COMPILE
+String name; // DOES NOT COMPILE
+public class Meerkat { } // DOES NOT COMPILE
+```
+There are two problems here. One is that the package and import statements are
+reversed. Although both are optional, package must come before import if present. The
+other issue is that a field attempts a declaration outside a class. This is not allowed. Fields
+and methods must be within a class.  
+Got all that? Think of the acronym PIC (picture): package, import, and class. Fields and
+methods are easier to remember because they merely have to be inside a class.
